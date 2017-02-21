@@ -31,6 +31,7 @@ void Stick::go(float f)
 	_dacDriver.setOutput(_min_v + (_max_v - _min_v) * f / 100.f);
 	
 	cout << "I2C Value set to " << _dacDriver.getLastValue() << endl;
+	turnOffGPIO();
 }
 
 void Stick::turnOnGPIO()
