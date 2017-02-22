@@ -13,5 +13,4 @@ add_executable(RPiDrone ${SOURCES})
 TARGET_LINK_LIBRARIES( RPiDrone
 pthread
 )
-#add_executable(dacSignalTest dacSignalTest.cpp)
 
