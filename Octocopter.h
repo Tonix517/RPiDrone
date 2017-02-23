@@ -25,15 +25,10 @@ public:
 
 	void applySignalCalib(float cud, float crot, float clr, float cfb);	
 
-	void Up(float v, unsigned durationMs = 0);
-	void Down(float v, unsigned durationMs = 0);
-
-	void TurnL(float v, unsigned durationMs = 0);
-	void TurnR(float v, unsigned durationMs = 0);
-	void ShiftL(float v, unsigned durationMs = 0);
-	void ShiftR(float v, unsigned durationMs = 0);
-	void Fwd(float v, unsigned durationMs = 0);
-	void Back(float v, unsigned durationMs = 0);
+	void UpDown(float v, unsigned durationMs = 0);
+	void TurnLR(float v, unsigned durationMs = 0);
+	void ShiftLR(float v, unsigned durationMs = 0);
+	void FwdBack(float v, unsigned durationMs = 0);
 
 	// util ops
 	void Hover();

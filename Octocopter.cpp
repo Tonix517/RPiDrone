@@ -42,13 +42,20 @@ bool inputAvailable()
 
 void Octocopter::bootUp()
 {
+	// Clear all
+	ud.go(0.f);
+	rotate.go(0.f);
+	lr.go(0.f);
+	fb.go(0.f);
+	
+	//
 	float v = 0.f;
 	float s = 0.002;
 	while(true)
 	{
 		ud.go(sin(v) * 50.f + 50.f);
 		v += s;
-		usleep(1000);
+		usleep(500);
 		
 		if(inputAvailable()) break;
 	}
@@ -79,62 +86,33 @@ void Octocopter::_sleepAndOff(unsigned ms, Stick &s, float calibV)
 	}
 } 
 
-void Octocopter::Up(float v, unsigned durationMs)
+void Octocopter::UpDown(float v, unsigned durationMs)
 {
 	v = _calib(v + calib_ud);
 	ud.go(v);
 	_sleepAndOff(durationMs, ud, calib_ud);
 }
 
-void Octocopter::Down(float v, unsigned durationMs)
-{
-	v = _calib(v + calib_ud);
-	ud.go(v);
-	_sleepAndOff(durationMs, ud, calib_ud);
-}
-
-void Octocopter::ShiftL(float v, unsigned durationMs)
+void Octocopter::ShiftLR(float v, unsigned durationMs)
 {
 	v = _calib(v + calib_lr);
 	lr.go(v);
 	_sleepAndOff(durationMs, lr, calib_lr);
 }
 
-void Octocopter::ShiftR(float v, unsigned durationMs)
-{
-	v = _calib(v + calib_lr);
-	lr.go(v);
-	_sleepAndOff(durationMs, lr, calib_lr);
-}
-
-void Octocopter::Fwd(float v, unsigned durationMs)
+void Octocopter::FwdBack(float v, unsigned durationMs)
 {
 	v = _calib(v + calib_fb);
 	fb.go(v);
 	_sleepAndOff(durationMs, fb, calib_fb);
 }
 
-void Octocopter::Back(float v, unsigned durationMs)
-{
-	v = _calib(v + calib_fb);
-	fb.go(v);
-	_sleepAndOff(durationMs, fb, calib_fb);
-}
-
-void Octocopter::TurnL(float v, unsigned durationMs)
+void Octocopter::TurnLR(float v, unsigned durationMs)
 {
 	v = _calib(v + calib_rot);
 	rotate.go(v);
 	_sleepAndOff(durationMs, rotate, calib_rot);
 }
-
-void Octocopter::TurnR(float v, unsigned durationMs)
-{
-	v = _calib(v + calib_rot);
-	rotate.go(v);
-	_sleepAndOff(durationMs, rotate, calib_rot);
-}
-
 
 void Octocopter::Hover()
 {

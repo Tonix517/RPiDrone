@@ -1,26 +1,21 @@
 #ifndef SCRIPT_AGENT_H
 #define SCRIPT_AGENT_H
 
-#include "Stick.h"
-
-#include <fstream>
+#include "Octocopter.h"
 
 class ScriptAgent
 {
-	Stick	&ud;
-	Stick	&lr;
-	Stick	&fb;
-	Stick	&turn;
-	
-	bool	_bReturn; // Do you want Drone to be back to origin
-	std::ifstream _in;
 
+	Octocopter &me;
+	
 public:
-	ScriptAgent(const char *fPath,
-		    Stick &rud, Stick &rlr, Stick &rfb, Stick &rTurn);
+	ScriptAgent(Octocopter &r); 
 	virtual ~ScriptAgent();
 
-	void Play(bool bReturn);	
+	void Play(const char* fPath);
+
+private:
+	void _ProcCmd(const string &cmd);
 };
 
 #endif

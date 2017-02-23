@@ -1,0 +1,8 @@
+*.swp
+*.swo
+Makefile
+CMakeFiles/
+RPiDrone
+*.tmp
+*.cmake
+CMakeCache.txt
