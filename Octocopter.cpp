@@ -15,8 +15,8 @@ using namespace exploringRPi;
 Octocopter::Octocopter():
 	ud(UPDOWN_GPIO, UPDOWN_MIN, UPDOWN_MAX, UPDOWN_ACTIVE),
 	rotate(ROTATE_GPIO, ROTATE_MIN, ROTATE_MAX, ROTATE_ACTIVE),
-	lr(FB_GPIO, FB_MIN, FB_MAX, FB_ACTIVE),
-	fb(LR_GPIO, LR_MIN, LR_MAX, LR_ACTIVE),
+	fb(FB_GPIO, FB_MIN, FB_MAX, FB_ACTIVE),
+	lr(LR_GPIO, LR_MIN, LR_MAX, LR_ACTIVE),
 	calib_ud(0.f),
 	calib_rot(0.f),
 	calib_lr(0.f),
@@ -28,40 +28,14 @@ Octocopter::Octocopter():
 Octocopter::~Octocopter()
 {}
 
-bool inputAvailable()
-{
-	struct timeval tv;
-	fd_set fds;
-	tv.tv_sec = 0;
-	tv.tv_usec= 0;
-	FD_ZERO(&fds);
-	FD_SET(STDIN_FILENO, &fds);
-	select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv);
-	return FD_ISSET(0, &fds);
-}
-
 void Octocopter::bootUp()
 {
-	// Clear all
-	ud.go(0.f);
-	rotate.go(0.f);
-	lr.go(0.f);
-	fb.go(0.f);
-	
-	//
-	float v = 0.f;
-	float s = 0.002;
-	while(true)
+	unsigned steps = 20;
+	for(int i = 0; i < steps + 1; i ++)
 	{
-		ud.go(sin(v) * 50.f + 50.f);
-		v += s;
-		usleep(500);
-		
-		if(inputAvailable()) break;
-	}
-
-	// Apply Calibrated signals
-	lr.go(_calib(calib_lr));
+		ud.go(100.f - 100.f/steps *i);
+		usleep(1000);
+	}	
 }
 
 void Octocopter::applySignalCalib(float cud, float crot, float clr, float cfb)
