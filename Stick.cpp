@@ -1,7 +1,7 @@
 #include "Stick.h"
 #include "GPIO.h"
 #include "Config.h"
-
+#include <unistd.h>
 #include <iostream>
 
 using namespace std;
@@ -29,7 +29,6 @@ void Stick::go(float f)
 {
 	turnOnGPIO();
 	_dacDriver.setOutput(_min_v + (_max_v - _min_v) * f / 100.f);
-	
 	cout << "I2C Value set to " << _dacDriver.getLastValue() << endl;
 	turnOffGPIO();
 }
@@ -38,7 +37,7 @@ void Stick::turnOnGPIO()
 {
 	_gpio.setValue(GPIO_VALUE(_onValue & 1));
 
-	cout << "GPIO [" << _gpio_num << "] is On @ " 
+	cout << endl << "GPIO [" << _gpio_num << "] is On @ " 
 	     << _gpio.getValue()  << endl;	
 }
 
@@ -47,5 +46,5 @@ void Stick::turnOffGPIO()
 	_gpio.setValue(GPIO_VALUE((!_onValue) & 1));
 
 	cout << "GPIO [" << _gpio_num << "] is Off @ " 
-	     << _gpio.getValue()  << endl;	
+	     << _gpio.getValue()  << endl << endl;	
 }
