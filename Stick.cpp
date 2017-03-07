@@ -2,15 +2,15 @@
 #include "GPIO.h"
 #include "Config.h"
 #include <unistd.h>
+#include <cmath>
 #include <iostream>
 
 using namespace std;
 using namespace exploringRPi;
 
-Stick::Stick(unsigned gpioNum, float minV, float maxV, GPIO_VALUE onVal)
+Stick::Stick(unsigned gpioNum, GPIO_VALUE onVal)
 	:_gpio_num(gpioNum), 
-	_min_v(minV), 
-	_max_v(maxV),
+	_lastV(0.f),
 	_dacDriver(I2CBUS_NUM, I2C_ADDR),
 	_gpio(gpioNum),
 	_onValue(onVal)	
@@ -28,8 +28,18 @@ Stick::~Stick()
 void Stick::go(float f)
 {
 	turnOnGPIO();
-	_dacDriver.setOutput(_min_v + (_max_v - _min_v) * f / 100.f);
-	cout << "I2C Value set to " << _dacDriver.getLastValue() << endl;
+
+	cout << "From " << _lastV << " to " << f << endl;
+
+	float step = _lastV > f ? -SIGNAL_STEP : SIGNAL_STEP;
+	while(abs(_lastV - f) >= SIGNAL_STEP)
+	{
+		_lastV += step;
+		_dacDriver.setOutput(_lastV);
+		cout << "I2C Value set to " << _dacDriver.getLastValue() << endl;
+		usleep(SIGNAL_INTERVAL);			
+	}
+		
 	turnOffGPIO();
 }
 

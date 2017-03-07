@@ -9,8 +9,7 @@
 class Stick
 {
 	unsigned _gpio_num;
-	float	 _max_v;
-	float	 _min_v;
+	float	 _lastV;
 
 	exploringRPi::DACDriver _dacDriver;
 	exploringRPi::GPIO	_gpio;
@@ -18,7 +17,7 @@ class Stick
 	exploringRPi::GPIO_VALUE		_onValue;	
 
 public:
-	Stick(unsigned gpioNum, float minV, float maxV, exploringRPi::GPIO_VALUE onVal);
+	Stick(unsigned gpioNum, exploringRPi::GPIO_VALUE onVal);
 	virtual ~Stick();
 
 	virtual void go(float f); // no sleep afterwards 

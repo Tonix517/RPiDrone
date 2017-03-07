@@ -13,10 +13,10 @@ using namespace std;
 using namespace exploringRPi;
 
 Octocopter::Octocopter():
-	ud(UPDOWN_GPIO, UPDOWN_MIN, UPDOWN_MAX, UPDOWN_ACTIVE),
-	rotate(ROTATE_GPIO, ROTATE_MIN, ROTATE_MAX, ROTATE_ACTIVE),
-	fb(FB_GPIO, FB_MIN, FB_MAX, FB_ACTIVE),
-	lr(LR_GPIO, LR_MIN, LR_MAX, LR_ACTIVE),
+	ud(UPDOWN_GPIO, UPDOWN_ACTIVE),
+	rotate(ROTATE_GPIO, ROTATE_ACTIVE),
+	fb(FB_GPIO, FB_ACTIVE),
+	lr(LR_GPIO, LR_ACTIVE),
 	calib_ud(0.f),
 	calib_rot(0.f),
 	calib_lr(0.f),
@@ -30,12 +30,13 @@ Octocopter::~Octocopter()
 
 void Octocopter::bootUp()
 {
-	unsigned steps = 20;
-	for(int i = 0; i < steps + 1; i ++)
-	{
-		ud.go(100.f - 100.f/steps *i);
-		usleep(1000);
-	}	
+	// All other sticks go to ZERO
+	rotate.go(0.f);
+	fb.go(0.f);
+	lr.go(0.f);
+	
+	ud.go(100.f);
+	ud.go(0.f);
 }
 
 void Octocopter::applySignalCalib(float cud, float crot, float clr, float cfb)
