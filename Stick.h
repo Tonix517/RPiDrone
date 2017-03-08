@@ -21,6 +21,7 @@ public:
 	virtual ~Stick();
 
 	virtual void go(float f); // no sleep afterwards 
+	void setVal(float f); // immediate I2C write.
 
 private:
 	void turnOnGPIO();

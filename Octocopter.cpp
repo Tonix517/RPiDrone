@@ -14,7 +14,7 @@ using namespace exploringRPi;
 
 Octocopter::Octocopter():
 	ud(UPDOWN_GPIO, UPDOWN_ACTIVE),
-	rotate(ROTATE_GPIO, ROTATE_ACTIVE),
+	rt(ROTATE_GPIO, ROTATE_ACTIVE),
 	fb(FB_GPIO, FB_ACTIVE),
 	lr(LR_GPIO, LR_ACTIVE),
 	calib_ud(0.f),
@@ -31,12 +31,22 @@ Octocopter::~Octocopter()
 void Octocopter::bootUp()
 {
 	// All other sticks go to ZERO
-	rotate.go(0.f);
-	fb.go(0.f);
-	lr.go(0.f);
-	
+/*
+	rt.go(50.f);
+	fb.go(50.f);
+	lr.go(50.f);
+*/
+	unsigned steps = 20;
+	for(int i = 0; i < steps; i ++)
+	{
+		ud.setVal(100.f - 100.f/steps * i);
+		usleep(20000);
+	}	
+
 	ud.go(100.f);
-	ud.go(0.f);
+	// Start from level 0 after bootup
+	//ud.setVal(100.f);
+	//usleep(20000);
 }
 
 void Octocopter::applySignalCalib(float cud, float crot, float clr, float cfb)
@@ -85,8 +95,8 @@ void Octocopter::FwdBack(float v, unsigned durationMs)
 void Octocopter::TurnLR(float v, unsigned durationMs)
 {
 	v = _calib(v + calib_rot);
-	rotate.go(v);
-	_sleepAndOff(durationMs, rotate, calib_rot);
+	rt.go(v);
+	_sleepAndOff(durationMs, rt, calib_rot);
 }
 
 void Octocopter::Hover()

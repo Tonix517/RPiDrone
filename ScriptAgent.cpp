@@ -1,8 +1,11 @@
 #include "ScriptAgent.h"
 
+#include <unistd.h>
+
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 using namespace std;
 using namespace exploringRPi;
 
@@ -31,7 +34,38 @@ void ScriptAgent::Play(const char *fPath)
 	}
 }
 
-void ScriptAgent::_ProcCmd(const string &cmd)
+void ScriptAgent::_ProcCmd(const string &cmdStr)
 {
-	cout << cmd << endl;
+	istringstream stream(cmdStr);
+
+	string cmd; float v = 0.f;
+	stream >> cmd >> v;
+
+	if (cmd[0] == '#') return;
+
+	if(cmd == "LR")
+	{
+		cout << "Left|Right " << v  << endl;
+		me.ShiftLR(v);
+	}
+	else if(cmd == "UD")
+	{
+		cout << "Up|Down " << v <<  endl;
+		me.UpDown(v);
+	}
+	else if(cmd == "FB")
+	{
+		cout << "Forward|Back " << v << endl;
+		me.FwdBack(v);
+	}
+	else if(cmd == "RT")
+	{
+		cout << "Rotate " << v <<  endl;
+		me.TurnLR(v);
+	}
+	else if(cmd == "SLEEP")
+	{
+		cout << "Sleep " << v << endl;
+		usleep((unsigned)v);
+	}
 }

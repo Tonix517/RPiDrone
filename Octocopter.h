@@ -6,7 +6,7 @@
 class Octocopter
 {
 	Stick ud;
-	Stick rotate;
+	Stick rt;
 	Stick lr;
 	Stick fb;
 
