@@ -20,5 +20,5 @@
 // For signal smoothing
 #define SIGNAL_STEP 0.5f
 // for usleep, in nm
-#define SIGNAL_INTERVAL 10000
+#define SIGNAL_INTERVAL 7000
 

@@ -31,11 +31,10 @@ Octocopter::~Octocopter()
 void Octocopter::bootUp()
 {
 	// All other sticks go to ZERO
-/*
+	lr.go(70.f);
 	rt.go(50.f);
 	fb.go(50.f);
-	lr.go(50.f);
-*/
+
 	unsigned steps = 20;
 	for(int i = 0; i < steps; i ++)
 	{
